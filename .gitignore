@@ -1,0 +1,55 @@
+# Python caches and environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+build/
+dist/
+*.egg-info/
+
+# Local data and generated outputs
+data/
+outputs/
+output/
+results/
+runs/
+logs/
+wandb/
+*.log
+
+# Raw pathology images and derived feature stores
+*.svs
+*.ndpi
+*.mrxs
+*.tif
+*.tiff
+*.h5
+*.hdf5
+
+# Model checkpoints and large arrays
+pytorch_model.bin
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.npy
+*.npz
+*.pkl
+*.pickle
+*.parquet
+
+# Archives and temporary packages
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+
+# Local OS/editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/

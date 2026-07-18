@@ -1,0 +1,81 @@
+version: 1
+
+defaults:
+  cohort: TCGA
+  folds: 5
+  training_seed: 29
+  split_seed: 0
+  basis_seed: 29
+  batch_size: 16
+  learning_rate: 0.001
+  num_epochs: 200
+  patience: 20
+  morsa_r: 96
+
+experiments:
+  # Canonical benchmark. MORSA is generated before the matched DiagSPD run
+  # that shares its fold-specific RNA basis.
+  - groups: [benchmark, head_attribution]
+    model_type: morsa_enc
+    head_type: linear
+    rank_k: 16
+
+  - groups: [benchmark, head_attribution, rank_sensitivity, morphology_ablation]
+    model_type: morsa_enc
+    head_type: spex
+    rank_k: 16
+
+  - groups: [benchmark]
+    model_type: mean
+    head_type: linear
+    rank_k: 16
+
+  - groups: [benchmark]
+    model_type: mean
+    head_type: spex
+    rank_k: 16
+
+  - groups: [benchmark]
+    model_type: he2rna
+    head_type: linear
+    rank_k: 16
+
+  - groups: [benchmark]
+    model_type: he2rna
+    head_type: spex
+    rank_k: 16
+
+  - groups: [benchmark]
+    model_type: vis
+    head_type: linear
+    rank_k: 16
+
+  - groups: [benchmark]
+    model_type: vis
+    head_type: spex
+    rank_k: 16
+
+  # Matched output-head attribution on the SPD morphology encoder.
+  - groups: [head_attribution]
+    model_type: morsa_enc
+    head_type: learned_rank
+    rank_k: 16
+
+  - groups: [head_attribution]
+    model_type: morsa_enc
+    head_type: covnull_spex
+    rank_k: 16
+
+  # Rank sensitivity for the complete MORSA model. K=16 is the canonical
+  # benchmark configuration above.
+  - groups: [rank_sensitivity]
+    model_type: morsa_enc
+    head_type: spex
+    ranks: [8, 32, 48, 64]
+
+  # Morphology-side covariance ablation with the canonical MORSA RNA basis.
+  - groups: [morphology_ablation]
+    model_type: diag_spd
+    head_type: spex
+    rank_k: 16
+    fixed_basis_experiment: morsa
