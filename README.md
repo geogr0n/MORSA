@@ -71,7 +71,7 @@ environment, PyTorch/CUDA installation boundary and runtime-measurement scope.
 
 This repository does not redistribute raw third-party H&E whole-slide images, RNA-seq files, controlled-access data, or the gated UNI checkpoint. Obtain raw data from the original TCGA/GDC/CPTAC and external project repositories under their own data-use terms.
 
-The processed results and analysis source data supporting the reported experiments are deposited separately in Zenodo. The current release (v1.1.0) has DOI `10.5281/zenodo.21431973`; the Concept DOI for all versions is `10.5281/zenodo.21195955`. See [DATA_AVAILABILITY.md](DATA_AVAILABILITY.md).
+The processed results and analysis source data supporting the reported experiments are deposited separately in Zenodo. The current release (v1.1.0) has DOI `10.5281/zenodo.21436404`; the Concept DOI for all versions is `10.5281/zenodo.21195955`. See [DATA_AVAILABILITY.md](DATA_AVAILABILITY.md).
 
 The expected local project layout is:
 
