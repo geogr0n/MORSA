@@ -47,7 +47,7 @@ echo ""
 is_supported_event() {
     local event="$1"
     case "$event" in
-        run_train|run_evaluate|run_experiments|run_analysis|run_cross_cohort_eval)
+        run_train|run_closed_form|run_evaluate|run_experiments|run_analysis|run_cross_cohort_eval)
             return 0
             ;;
         *)
@@ -71,6 +71,10 @@ run_event_for_cancer() {
         run_train)
             echo "[run] $event cancer=$cancer"
             DATA_DIR="$data_dir" COHORT="TCGA" bash "$SCRIPT_DIR/run_train.sh"
+            ;;
+        run_closed_form)
+            echo "[run] $event cancer=$cancer"
+            DATA_DIR="$data_dir" COHORT="TCGA" bash "$SCRIPT_DIR/run_closed_form.sh"
             ;;
         run_evaluate)
             echo "[run] $event cancer=$cancer"
@@ -106,7 +110,7 @@ run_event_for_cancer() {
 for event in "${event_type[@]}"; do
     if ! is_supported_event "$event"; then
         echo "Unsupported event: $event" >&2
-        echo "Supported events: run_train run_evaluate run_experiments run_analysis run_cross_cohort_eval" >&2
+        echo "Supported events: run_train run_closed_form run_evaluate run_experiments run_analysis run_cross_cohort_eval" >&2
         exit 1
     fi
 done

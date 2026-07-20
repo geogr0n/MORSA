@@ -15,11 +15,11 @@ Supported output heads are `linear`, `spex`, `learned_rank` and
 `covnull_spex`. Experiment directory names are generated from this structured
 configuration; callers do not supply free-form experiment names.
 
-The canonical MORSA configuration uses `K=16`. The complete experiment matrix
-also evaluates `K={8,16,32,48,64}`, with model selection based on held-out
-validation predictions. It contains the seed-29 backbone benchmark, matched
-output-head experiments, rank sensitivity and the DiagSPD
-morphology-covariance ablation in one reproducible batch.
+The primary MORSA comparisons use one global rank, `K=16`. The complete
+experiment matrix also evaluates `K={8,16,32,48,64}` on held-out validation
+predictions. It contains the backbone benchmark, matched output-head
+experiments, rank sensitivity and the DiagSPD morphology-covariance ablation
+in one reproducible batch.
 
 ## Repository Contents
 
@@ -145,6 +145,18 @@ Run cross-cohort evaluation:
 DATA_ROOT=./data CROSS_COHORT_ROOT=./data/cross-cohort CANCER=LUAD bash scripts/run_cross_cohort_eval.sh
 ```
 
+Fit and evaluate analytical MORSA-Mean for one cohort:
+
+```bash
+DATA_DIR=./data/COAD bash scripts/run_closed_form.sh
+```
+
+This entry point computes the fold-specific RNA basis, mean-pools the
+morphology prototypes, fits all 13 ridge candidates on the inner-training
+subset, selects the penalty on inner-validation all-gene PCC and evaluates the
+selected map on the outer test fold. It writes the same `test_results.pkl`
+structure used by the standard evaluation pipeline.
+
 ## Complete Experiment Matrix
 
 Print the complete 15-configuration, single-seed matrix without launching jobs:
@@ -153,8 +165,8 @@ Print the complete 15-configuration, single-seed matrix without launching jobs:
 python scripts/run_experiments.py --data-root ./data
 ```
 
-Run the complete five-fold matrix for one cohort, including evaluation after
-each configuration:
+Run the complete five-fold trainable-model matrix for one cohort, including
+evaluation after each configuration:
 
 ```bash
 python scripts/run_experiments.py --data-root ./data --cancers PAAD --execute
@@ -171,10 +183,10 @@ python scripts/run_experiments.py \
 ```
 
 All experiments use training seed 29. The default matrix is ordered so that
-canonical MORSA is trained before the matched DiagSPD experiment that consumes
-its fold-specific RNA basis. Every run is created from its declared
-configuration; existing non-empty output directories cause an error instead of
-being overwritten or silently reused.
+the primary MORSA configuration is trained before the matched DiagSPD
+experiment that consumes its fold-specific RNA basis. Every run is created
+from its declared configuration; existing non-empty output directories cause
+an error instead of being overwritten or silently reused.
 
 ## Structure Analyses
 
@@ -249,11 +261,13 @@ provided in the Zenodo record listed in
 [DATA_AVAILABILITY.md](DATA_AVAILABILITY.md). Manuscript working files and final
 figure exports are not part of this code package.
 
-Runtime values refer to model fitting and model-side profiling after
-precomputed WSI-derived `cluster_features` are available. They
+Runtime values refer to model fitting after precomputed WSI-derived
+`cluster_features` are available. Neural values sum the five optimizer-based
+training loops; analytical MORSA-Mean sums the complete 13-candidate ridge
+sweeps. The matched trained-versus-analytical MORSA-Mean comparison excludes
+prototype averaging and fold-specific PCA from both measurements. All values
 exclude raw WSI tiling, UNI feature extraction and k-means feature
-summarization, which were completed upstream rather than on the current local
-workstation.
+summarization.
 
 ## Licence and Provenance
 

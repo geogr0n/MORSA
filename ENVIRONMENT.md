@@ -35,7 +35,9 @@ its path through `--uni_model_path` or `UNI_MODEL_PATH`.
 
 ## Timing Boundary
 
-The efficiency comparison reports model fitting and model-side profiling after
-precomputed WSI-derived `cluster_features` are available. It excludes raw WSI
-tiling, UNI feature extraction and k-means feature summarization, which were
-completed upstream rather than on the current local workstation.
+The efficiency comparison sums five optimizer-based training loops for neural
+models and the complete 13-candidate ridge sweeps for analytical MORSA-Mean.
+The matched trained-versus-analytical MORSA-Mean comparison excludes prototype
+averaging and fold-specific PCA from both measurements. All runtime values
+exclude raw WSI tiling, UNI feature extraction and k-means feature
+summarization, which are upstream preprocessing steps.
